@@ -1,0 +1,11 @@
+[package]
+name = "ruex"
+version = "0.1.0"
+authors = ["Victor Dudochkin <dudochkin.victor@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+yew = "0.17"
+log = "0.4"
+serde = { version = "1.0", features = ["derive"] }
+wasm-logger = "0.2"
