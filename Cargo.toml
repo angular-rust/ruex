@@ -2,7 +2,18 @@
 name = "ruex"
 version = "0.1.0"
 authors = ["Victor Dudochkin <dudochkin.victor@gmail.com>"]
+readme = "README.md"
+homepage = "https://angular-rust.github.io/ruex"
+repository = "https://github.com/angular-rust/ruex"
+documentation = "https://docs.rs/ruex"
+description = "Generic State Management framework"
+keywords = ["mvc", "mvc-architecture", "redux", "state-management", "time-travel", "event-bus"]
+
 edition = "2018"
+license = "MPL-2.0"
+
+[badges]
+maintenance = { status = "actively-developed" }
 
 [dependencies]
 yew = "0.17"
