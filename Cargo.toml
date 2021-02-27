@@ -7,7 +7,7 @@ homepage = "https://angular-rust.github.io/ruex"
 repository = "https://github.com/angular-rust/ruex"
 documentation = "https://docs.rs/ruex"
 description = "Generic State Management framework"
-keywords = ["mvc", "mvc-architecture", "redux", "state-management", "time-travel", "event-bus"]
+keywords = ["mvc", "redux", "state-management", "time-travel", "event-bus"]
 
 edition = "2018"
 license = "MPL-2.0"
