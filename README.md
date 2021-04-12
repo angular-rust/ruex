@@ -1,13 +1,14 @@
 <div align="center">
 
-![Star a repo](https://dudochkin-victor.github.io/assets/ruex/logo-wide.svg)
+[![](https://dudochkin-victor.github.io/assets/ruex/logo-wide.svg)](#top)
 # Ruex
 
 [![API Docs][docrs-badge]][docrs-url]
 [![Crates.io][crates-badge]][crates-url]
+[![Code coverage][codecov-badge]][codecov-url]
+[![Tests][tests-badge]][tests-url]
 [![MPL-2.0 licensed][license-badge]][license-url]
 [![Gitter chat][gitter-badge]][gitter-url]
-[![Rustc Version 1.45+][rust-badge]][rust-url]
 [![loc][loc-badge]][loc-url]
 </div>
 
@@ -17,11 +18,13 @@
 [crates-url]: https://crates.io/crates/ruex
 [license-badge]: https://img.shields.io/badge/license-MPL--2.0-blue.svg?style=flat-square
 [license-url]: https://github.com/angular-rust/ruex/blob/master/LICENSE
-[gitter-badge]: https://img.shields.io/gitter/room/angular_rust/angular_rust.svg?style=flat-square
+[gitter-badge]: https://img.shields.io/gitter/room/angular_rust/community.svg?style=flat-square
 [gitter-url]: https://gitter.im/angular_rust/community
-[rust-badge]: https://img.shields.io/badge/rustc-1.45-lightgrey.svg?style=flat-square
-[rust-url]: https://blog.rust-lang.org/2020/07/16/Rust-1.45.0.html
-[loc-badge]: https://tokei.rs/b1/github/angular-rust/ruex?category=code
+[tests-badge]: https://img.shields.io/github/workflow/status/angular-rust/ruex/tests?label=tests&logo=github&style=flat-square
+[tests-url]: https://github.com/angular-rust/ruex/actions/workflows/tests.yml
+[codecov-badge]: https://img.shields.io/codecov/c/github/angular-rust/ruex?logo=codecov&style=flat-square&token=L7KV27OLY0
+[codecov-url]: https://codecov.io/gh/angular-rust/ruex
+[loc-badge]: https://img.shields.io/tokei/lines/github/angular-rust/ruex?style=flat-square
 [loc-url]: https://github.com/angular-rust/ruex
 
 Ruex is a Centralized State Management And Design Patterns for Rust.
