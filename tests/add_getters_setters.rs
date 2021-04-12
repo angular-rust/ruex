@@ -4,7 +4,7 @@
 // #[derive(AddGetter, AddGetterVal, AddGetterMut, AddSetter)]
 // struct Ts {
 //     jaf: u8,
-    
+
 //     #[set]
 //     #[get_val]
 //     field_1: u8,
@@ -89,8 +89,6 @@
 //     let b = a.field_1();
 //     assert_eq!(b, 5);
 // }
-
-
 
 // // *********************************
 // // * test tags on the whole struct *

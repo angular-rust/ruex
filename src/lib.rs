@@ -8,8 +8,8 @@ mod patterns;
 mod producer;
 mod subscriber;
 
-use producer::Producer;
-use subscriber::Subscriber;
+// use producer::Producer;
+// use subscriber::Subscriber;
 
 #[cfg(test)]
 mod tests {

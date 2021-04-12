@@ -1,3 +1,5 @@
+#![allow(clippy::new_ret_no_self)]
+
 //! A Singleton IView implementation.
 //!
 //! In RuEx, the View class assumes these responsibilities:
@@ -29,7 +31,7 @@ pub struct View<B, C, V> {
 
     /// Mapping of Notification names to Observer lists
     observer_map: Vec<C>, // FIXME: adjust
-    tmp: V // FIXME: remove
+    tmp: V, // FIXME: remove
 }
 
 impl<B, C, V> View<B, C, V> {
@@ -70,7 +72,7 @@ impl<B, C, V> View<B, C, V> {
 }
 
 impl<B, C, V> IView<B, C, V> for View<B, C, V> {
-/// Register an IObserver to be notified
+    /// Register an IObserver to be notified
     /// of INotifications with a given name.
     ///
     /// * `notification_name` - the name of the INotifications to notify this IObserver of
@@ -221,7 +223,7 @@ impl<B, C, V> IView<B, C, V> for View<B, C, V> {
 
     /// Check if a Mediator is registered or not
     ///
-    /// * `mediator_name` - 
+    /// * `mediator_name` -
     /// Returns whether a Mediator is registered with the given mediatorName.
     fn has_mediator(&self, mediator_name: String) -> bool {
         // return mediatorMap[ mediatorName ] != null;
