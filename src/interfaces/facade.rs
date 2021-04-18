@@ -10,9 +10,8 @@
 
 use super::mediator::IMediator;
 use super::notification::INotification;
-use super::proxy::IProxy;
 use super::notifier::INotifier;
-
+use super::proxy::IProxy;
 
 pub trait IFacade<B, D, V>: INotifier<B> {
     /// Register an IProxy with the Model by name.

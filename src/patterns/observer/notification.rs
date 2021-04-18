@@ -1,3 +1,5 @@
+#![allow(clippy::new_ret_no_self)]
+
 //! A base INotification implementation.
 //!
 //! RuEx does not rely upon underlying event models such

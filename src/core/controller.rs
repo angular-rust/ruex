@@ -1,3 +1,5 @@
+#![allow(clippy::new_ret_no_self)]
+
 //! A Singleton IController implementation.
 //!
 //! In RuEx, the Controller class follows the
@@ -111,7 +113,7 @@ impl<B, C, V> IController<B> for Controller<B, C, V> {
     ///
     /// * `notification_name` - the name of the INotification
     /// * `command_factory` - the Class of the ICommand
-    fn register_command(&self,  notification_name: String, command_factory: Box<dyn FnOnce()>) {
+    fn register_command(&self, notification_name: String, command_factory: Box<dyn FnOnce()>) {
         // if ( commandMap[ notificationName ] == null ) {
         // 	view.registerObserver( notificationName, new Observer( executeCommand, this ) );
         // }
@@ -120,7 +122,7 @@ impl<B, C, V> IController<B> for Controller<B, C, V> {
 
     /// Check if a Command is registered for a given Notification
     ///
-    /// * `notification_name` - 
+    /// * `notification_name` -
     /// Returns whether a Command is currently registered for the given notificationName.
     fn has_command(&self, notification_name: String) -> bool {
         // return commandMap[ notificationName ] != null;

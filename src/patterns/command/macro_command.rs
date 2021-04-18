@@ -1,3 +1,5 @@
+#![allow(clippy::new_ret_no_self)]
+
 //! A base ICommand implementation that executes other ICommands.
 //!  
 //! A MacroCommand maintains an list of
@@ -22,11 +24,10 @@ use crate::interfaces::*;
 // use crate::patterns::observer::*;
 
 pub struct MacroCommand {
-    sub_commands: Vec<String>
+    sub_commands: Vec<String>,
 }
 
 impl MacroCommand {
-
     /// Constructor.
     ///
     ///

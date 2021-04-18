@@ -34,7 +34,7 @@ pub trait IObserver<B, C> {
     /// The notification method should take one parameter of type INotification
     ///
     /// * `notify_method` - the notification (callback) method of the interested object
-    fn set_notify_method(&self, notify_method: Box<dyn FnOnce()>); // FIXME: 
+    fn set_notify_method(&self, notify_method: Box<dyn FnOnce()>); // FIXME:
 
     /// Set the notification context.
     ///

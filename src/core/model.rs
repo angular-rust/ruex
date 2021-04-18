@@ -1,3 +1,5 @@
+#![allow(clippy::new_ret_no_self)]
+
 //! A Singleton IModel implementation.
 //!
 //! In RuEx, the Model class provides
