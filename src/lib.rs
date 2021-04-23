@@ -47,6 +47,6 @@ mod tests {
 //     }
 // }
 
-// fn main() {
-//     yew::start_app::<Model>();
-// }
+pub mod prelude {
+    pub use super::patterns::builder::*;
+}
