@@ -1,7 +1,7 @@
 #![allow(dead_code)]
 #![allow(unused_variables)]
-use std::{cell::RefCell, ops::Deref};
 use std::rc::Rc;
+use std::{cell::RefCell, ops::Deref};
 
 pub struct Builder<T> {
     inner: RefCell<Option<Rc<T>>>,
