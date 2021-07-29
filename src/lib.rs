@@ -1,6 +1,8 @@
 #![allow(unused_imports)]
 #![allow(unused_variables)]
 
+#![doc(html_logo_url = "https://dudochkin-victor.github.io/assets/ruex/logo.svg")]
+
 mod core;
 mod event_bus;
 mod interfaces;
