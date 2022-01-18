@@ -29,14 +29,17 @@
 
 Ruex is a Centralized State Management And Design Patterns for Rust.
 
-**Angular Rust** is a high productivity, `platform-agnostic` frontend framework for the [Rust language](https://www.rust-lang.org/). It now supports desktop and web development. Angular Rust currently uses Clutter for desktop development and WebAssembly for web development. We are planning to add support for mobile development.
+## Pattern List
 
-![Angular Rust structure](https://dudochkin-victor.github.io/assets/angular-rust/structure.svg)
-
-## Features
-
-- [x] Graphic abstraction for cairo and web canvas, implemented in [UX Animate](https://github.com/angular-rust/ux-animate)
-
+Template name                                                     |    Type    | Links 
+:-----------------------------------------------------------------|:----------:|:------------
+[Builder](src/foundation/patterns/builder.rs)                     | Creational | [Refactoring.Guru](https://refactoring.guru/design-patterns/builder) |
+[Command](src/foundation/patterns/command/simple_command.rs)      | Behavioral | [Refactoring.Guru](https://refactoring.guru/design-patterns/command) |
+[Facade](src/foundation/patterns/facade.rs)                       | Structural | [Refactoring.Guru](https://refactoring.guru/design-patterns/facade) |
+[Mediator](src/foundation/patterns/mediator/mediator.rs)          | Behavioral | [Refactoring.Guru](https://refactoring.guru/design-patterns/mediator) |
+[Proxy](src/foundation/patterns/proxy/proxy.rs)                   | Structural | [Refactoring.Guru](https://refactoring.guru/design-patterns/proxy) |
+[Observer](src/foundation/patterns/observer/observer.rs)          | Behavioral | [Refactoring.Guru](https://refactoring.guru/design-patterns/observer) |
+[Singleton](src/prelude/singleton.rs)                             | Creational | [Refactoring.Guru](https://refactoring.guru/design-patterns/singleton) |
 
 ## Quick Start
 
@@ -50,6 +53,8 @@ Install Ruex:
 * [Samples](https://github.com/angular-rust/ux-samples)
 * [Apps using Angular Rust](https://github.com/angular-rust/ruex/wiki/Apps-in-the-Wild)
 * [Articles Featuring Angular Rust](https://github.com/angular-rust/ruex/wiki/Articles)
+* [The Catalog of Design Patterns](https://refactoring.guru/design-patterns/catalog)
+* [Design patterns card](http://www.mcdonaldland.info/files/designpatterns/designpatternscard.pdf)
 
 ## Community
 
@@ -93,4 +98,22 @@ Come help us on the [issues that matter that the most](https://github.com/angula
 Please [report all bugs!](https://github.com/angular-rust/ruex/issues/new/choose) We are happy to help support developers fix the bugs they find if they are interested and have the time.
 
 ## Todo
-- [ ] Documentation
+
+Template name           |    Type    | Links 
+:-----------------------|:----------:|:------
+Abstract Factory        | Creational | [Refactoring.Guru](https://refactoring.guru/design-patterns/abstract-factory) |
+Adapter                 | Structural | [Refactoring.Guru](https://refactoring.guru/design-patterns/adapter) |
+Bridge                  | Structural | [Refactoring.Guru](https://refactoring.guru/design-patterns/bridge) |
+Chain of Responsibility | Behavioral | [Refactoring.Guru](https://refactoring.guru/design-patterns/chain-of-responsibility) |
+Composite               | Structural | [Refactoring.Guru](https://refactoring.guru/design-patterns/composite) |
+Decorator               | Structural | [Refactoring.Guru](https://refactoring.guru/design-patterns/decorator) |
+Factory Method          | Creational | [Refactoring.Guru](https://refactoring.guru/design-patterns/factory-method) |
+Flyweight               | Structural | [Refactoring.Guru](https://refactoring.guru/design-patterns/flyweight) |
+Interpreter             | Behavioral | [Wiki](https://en.wikipedia.org/wiki/Interpreter_pattern) |
+Iterator                | Behavioral | [Refactoring.Guru](https://refactoring.guru/design-patterns/iterator) |
+Memento                 | Behavioral | [Refactoring.Guru](https://refactoring.guru/design-patterns/memento) |
+Prototype               | Creational | [Refactoring.Guru](https://refactoring.guru/design-patterns/prototype) |
+State                   | Behavioral | [Refactoring.Guru](https://refactoring.guru/design-patterns/state) |
+Strategy                | Behavioral | [Refactoring.Guru](https://refactoring.guru/design-patterns/strategy) |
+Template Method         | Behavioral | [Refactoring.Guru](https://refactoring.guru/design-patterns/template-method) |
+Visitor                 | Behavioral | [Refactoring.Guru](https://refactoring.guru/design-patterns/visitor) |
