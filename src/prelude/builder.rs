@@ -9,6 +9,7 @@ pub trait With<T> {
 
 /// Powerfull way to get object properties.
 pub trait Getter<T> {
+    /// Typed getter
     fn get(from: &T) -> &Self;
 }
 
@@ -32,6 +33,7 @@ pub trait BuildWith<T> {
 
 /// Trait which generate builder by set the some parameter.
 pub trait WithBuilder<P>: Sized {
+    /// Generate builder for struct
     fn with(param: P) -> Builder<Self>
     where
         Self: Default;

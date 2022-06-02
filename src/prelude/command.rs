@@ -2,7 +2,7 @@ use std::{fmt::Debug, rc::Rc};
 
 use super::Notification;
 
-/// The interface definition for a PureMVC Command.
+/// The definition for a PureMVC Command.
 pub trait Command<Body>: Debug
 where
     Body: Debug + 'static,

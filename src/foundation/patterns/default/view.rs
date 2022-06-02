@@ -16,11 +16,11 @@ use crate::{
 /// In PureMVC, the [View] class assumes these responsibilities:
 ///
 /// - Maintain a cache of [Mediator] instances.
-/// - Provide methods for registering, retrieving, and removing [Mediator]s.
+/// - Provide methods for registering, retrieving, and removing [Mediator]'s.
 /// - Managing the observer lists for each [Notification] in the application.
-/// - Providing a method for attaching [Observer]s to an [Notification]'s observer list.
+/// - Providing a method for attaching [Observer]'s to an [Notification]'s observer list.
 /// - Providing a method for broadcasting an [Notification].
-/// - Notifying the [Observer]s of a given [Notification] when it broadcast.
+/// - Notifying the [Observer]'s of a given [Notification] when it broadcast.
 ///
 
 pub struct BaseView<Body>

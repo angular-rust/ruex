@@ -7,7 +7,7 @@ use crate::prelude::*;
 /// In PureMVC, the [Controller] class follows the
 /// 'Command and Controller' strategy, and assumes these responsibilities:
 ///
-/// - Remembering which [Command]s are intended to handle which [Notification]s.
+/// - Remembering which [Command]'s are intended to handle which [Notification]'s.
 /// - Registering itself as an [Observer] with the [View] for each [Notification]
 /// that it has an [Command] mapping for.
 /// - Creating a new instance of the proper [Command] to handle a given [Notification]
@@ -15,9 +15,12 @@ use crate::prelude::*;
 /// - Calling the [Command]'s [execute] method, passing in the [Notification].
 ///
 ///
-/// Your application must register [Command]s with the Controller.
+/// Your application must register [Command]'s with the [Controller].
 /// The simplest way is to subclass [Facade],
-/// and use its [initialize] method to add your registrations.
+/// and use its [register_command] method to add your registrations.
+/// 
+/// [execute]: Command::execute
+/// [register_command]: Controller::register_command
 
 pub struct BaseController<Body>
 where
@@ -50,6 +53,7 @@ where
         }
     }
 
+    /// Reprecent controller as [NotifyContext]
     pub fn as_context(&self) -> Rc<dyn NotifyContext> {
         self.notify_context.clone()
     }
@@ -59,7 +63,7 @@ impl<Body> Singleton for BaseController<Body>
 where
     Body: fmt::Debug + 'static,
 {
-    /// Controller Singleton Factory method
+    /// [Controller] Singleton Factory method
     ///
     /// It is not possible to implement Singleton with generics.
     /// So you should implement it in your final code only.

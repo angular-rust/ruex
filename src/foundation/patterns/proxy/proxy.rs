@@ -19,12 +19,14 @@ use crate::{
 /// we adopt an asyncronous idiom; setting data (or calling a method) on the
 /// [Proxy] and listening for a [Notification] to be sent
 /// when the [Proxy] has retrieved the data from the service.
+/// 
+/// [Notification]: crate::prelude::Notification
 
 pub struct BaseProxy<Body>
 where
     Body: fmt::Debug + 'static,
 {
-    // the data object
+    /// Represens data object
     pub data: Option<Body>,
 }
 

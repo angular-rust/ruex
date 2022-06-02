@@ -13,18 +13,22 @@ use crate::prelude::{Interest, Notification};
 ///
 /// Notifications are not meant to be a replacement for Events.
 /// Generally, [Mediator] implementors place event listeners on their view components, which they
-/// then handle in the usual way. This may lead to the broadcast of [Notification]s to
-/// trigger [Command]s or to communicate with other [Mediator]s. [Proxy] and [Command]
-/// instances communicate with each other and [Mediator]s  by broadcasting [Notification]s.
+/// then handle in the usual way. This may lead to the broadcast of [Notification]'s to
+/// trigger [Command]'s or to communicate with other [Mediator]'s. [Proxy] and [Command]
+/// instances communicate with each other and [Mediator]'s  by broadcasting [Notification]'s.
 ///
-/// A key difference between Flash [Event]s and PureMVC
-/// [Notification]s is that [Event]s follow the
+/// A key difference between native event's and PureMVC
+/// [Notification]'s is that event's follow the
 /// 'Chain of Responsibility' pattern, 'bubbling' up the display hierarchy
-/// until some parent component handles the [Event], while
-/// PureMVC [Notification]s follow a 'Publish/Subscribe'
+/// until some parent component handles the event, while
+/// PureMVC [Notification]'s follow a 'Publish/Subscribe'
 /// pattern. PureMVC classes need not be related to each other in a
 /// parent/child relationship in order to communicate with one another
-/// using [Notification]s.
+/// using [Notification]'s.
+/// 
+/// [Command]: crate::prelude::Command
+/// [Proxy]: crate::prelude::Proxy
+/// [Mediator]: crate::prelude::Mediator
 
 pub struct BaseNotification<Body>
 where

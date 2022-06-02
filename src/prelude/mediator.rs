@@ -2,21 +2,21 @@ use std::{any::Any, fmt::Debug, rc::Rc};
 
 use super::{Interest, Notification, NotifyContext, View};
 
-/// The interface definition for a PureMVC Mediator.
+/// The definition for a PureMVC [Mediator].
 ///
 /// In PureMVC, [Mediator] implementors assume these responsibilities:
 ///
-/// - Implement a common method which returns a list of all [Notification]s
+/// - Implement a common method which returns a list of all [Notification]'s
 /// the [Mediator] has interest in.
 /// - Implement a common notification (callback) method.
 ///
-/// Additionally, [Mediator]s typically:
+/// Additionally, [Mediator]'s typically:
 ///
 /// - Act as an intermediary between one or more view components such as text boxes or
 /// list controls, maintaining references and coordinating their behavior.
 /// - In Flash-based apps, this is often the place where event listeners are
 /// added to view components, and their handlers implemented.
-/// - Respond to and generate [Notification]s, interacting with of
+/// - Respond to and generate [Notification]'s, interacting with of
 /// the rest of the PureMVC app.
 ///
 /// When an [Mediator] is registered with the [View],
@@ -26,9 +26,14 @@ use super::{Interest, Notification, NotifyContext, View};
 /// it wishes to be notified about.
 ///
 /// The [View] will then create an [Observer] object
-/// encapsulating that [Mediator]'s ([handleNotification]) method
-/// and register it as an Observer for each [Notification] name returned by
+/// encapsulating that [Mediator]'s [handle_notification] method
+/// and register it as an [Observer] for each [Notification] name returned by
 /// [list_notification_interests].
+/// 
+/// [Observer]: crate::prelude::Observer
+/// [handle_notification]: Mediator::handle_notification
+/// [list_notification_interests]: Mediator::list_notification_interests
+
 pub trait Mediator<Body>: NotifyContext + Debug + Sized + Any
 where
     Body: Debug + 'static,

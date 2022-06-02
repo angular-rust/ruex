@@ -1,9 +1,10 @@
 use super::{integrations::FsmIntegration, Fsm, State};
 // use Timer;
 
-/// Controller to inject into application to perform transitions and query currentStateName
+/// Controller to inject into application
+/// 
 /// Injecting FSM directly to would give access to add method, but adding states should be done during initial
-/// configuration. So provide access to FSMController instead to restrict usage to only the functionality needed after
+/// configuration. So provide access to FsmController instead to restrict usage to only the functionality needed after
 /// startup.
 pub struct FsmController<T>
 where
@@ -16,11 +17,13 @@ impl<T> FsmController<T>
 where
     T: FsmIntegration<T>,
 {
+    /// Create new FsmController
     pub fn new(fsm: Fsm<T>) -> Self {
         Self { fsm }
     }
 
     // wait: Option<bool> = true
+    /// Goto to the state
     pub fn goto(
         &self,
         state: impl State<T> + 'static,
@@ -41,6 +44,7 @@ where
         self.fsm.goto(state)
     }
 
+    /// Retrieve current state
     pub fn current_state_name(&self) -> String {
         self.fsm.current_state_name()
     }

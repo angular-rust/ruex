@@ -21,6 +21,9 @@ use crate::prelude::{Model, Proxy, Singleton};
 /// Your application must register [Proxy] instances with the [Model]. Typically, you use an
 /// [Command] to create and register [Proxy] instances once the [Facade] has initialized the Core
 /// actors.
+/// 
+/// [Command]: crate::prelude::Command
+/// [Facade]: crate::prelude::Facade
 pub struct BaseModel {
     // Mapping of proxy types to [Proxy] instances
     storages: RefCell<BTreeMap<TypeId, Rc<dyn Any>>>,
@@ -30,10 +33,12 @@ unsafe impl std::marker::Send for BaseModel {}
 unsafe impl std::marker::Sync for BaseModel {}
 
 impl BaseModel {
-    // Create instance of BaseModel.
-    //
-    // This [Model] implementation is a Singleton, so you should not call the constructor
-    // directly, but instead call the static Singleton Factory method [Model::instance()]
+    /// Create instance of BaseModel.
+    ///
+    /// This [Model] implementation is a Singleton, so you should not call the constructor
+    /// directly, but instead call the static Singleton Factory method [global()][1]
+    /// 
+    /// [1]: Singleton::global
     pub fn new() -> Self {
         Self {
             storages: RefCell::new(BTreeMap::new()),

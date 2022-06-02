@@ -1,13 +1,13 @@
-#![allow(unused_imports)]
-#![allow(unused_variables)]
-#![allow(dead_code)]
-#![allow(non_snake_case)]
+#![allow(unused_imports, unused_variables, dead_code, non_snake_case)]
 
 use proc_macro::TokenStream;
-use syn::parse::{Parse, ParseStream, Result};
-use syn::punctuated::Punctuated;
-use syn::{parse_macro_input, DeriveInput, ItemFn, Ident, Token};
 use quote::quote;
+use syn::{
+    parse::{Parse, ParseStream, Result},
+    parse_macro_input,
+    punctuated::Punctuated,
+    DeriveInput, Ident, ItemFn, Token,
+};
 
 struct AdviceField {
     member: Ident,
@@ -47,7 +47,6 @@ impl Parse for Args {
         })
     }
 }
-
 
 #[proc_macro_attribute]
 pub fn Aspect(attr: TokenStream, item: TokenStream) -> TokenStream {

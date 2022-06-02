@@ -6,14 +6,18 @@ use super::StateDef;
 
 // pub mod injector;
 
+/// Defines finite state machine integration functionality
 pub trait FsmIntegration<T: FsmIntegration<T>>: Clone {
+    /// Makes a transition from one state to another
     fn transition(&self, new_state: Rc<StateDef<T>>, old_state: Option<Rc<StateDef<T>>>) -> bool;
 }
 
+/// Represents callback integration
 #[derive(Default, Debug, Clone)]
 pub struct CallbackIntegration;
 
 impl CallbackIntegration {
+    /// Create new callback integration
     pub fn new() {}
 }
 

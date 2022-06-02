@@ -1,3 +1,28 @@
+//! Finite State Machines
+//!
+//! A state machine is a behavior model. It consists of a finite number of states and is therefore also 
+//! called finite-state machine (FSM). Based on the current state and a given input the machine performs 
+//! state transitions and produces outputs. There are basic types like Mealy and Moore machines and more 
+//! complex types like Harel and UML statecharts.
+//! 
+//! The basic building blocks of a state machine are states and transitions. A state is a situation of a system 
+//! depending on previous inputs and causes a reaction on following inputs. One state is marked as the initial state; 
+//! this is where the execution of the machine starts. A state transition defines for which input a state is changed 
+//! from one to another. Depending on the state machine type, states and/or transitions produce outputs.
+//!
+//! Consider the simple state machine above. It consists of two states, *Off* and *On*. *On* is the initial state here; 
+//! it is activated when the state machine is executed. The arrows between the states denote the possible state transitions. 
+//! They define for which input a state change occurs. Here, the active state is changed from *On* to *Off* for the 
+//! input *buttonpressed*, and back again to *On* for the same input.
+//!
+//! > **Please note:** In automata theory an automaton reacts on inputs and produces outputs. There, the terms input and 
+//! output are usually used for symbols which belong to an alphabet. Modern state machines use an extended definition 
+//! of inputs and outputs. Inputs can be events like a button click or a time trigger while outputs are actions like 
+//! an operation call or a variable assignment.
+//!
+//! In the following, we will extend the simple switch example to explain the differences between Mealy and Moore machines 
+//! as well as Harel statecharts and UML state machines.
+
 use std::any::TypeId;
 
 mod fsm;
@@ -12,28 +37,35 @@ pub use integrations::*;
 mod state_def;
 pub use state_def::*;
 
+///! Defines tipe_id functionality
 pub trait Typed {
+    ///! Retrieve TypeId
     fn type_id(&self) -> TypeId;
 }
 
+///! Defines Factory Method functionality
 pub trait FactoryMethod<T> {
+    ///! Create instance from Factory
     fn create(&self) -> T;
 }
 
+///! State's holder
 pub type Transitions<T> = Vec<Box<dyn State<T>>>;
 
 // todo should contain PartialEq
 // pub fn contains(&self, x: &T) -> bool
 // or fn any<F>(&mut self, f: F) -> bool
 
+///! Defines State functionality for finite state machine
+#[allow(unused_variables)]
 pub trait State<T>: std::fmt::Debug + Typed
 where
     T: FsmIntegration<T>,
 {
-    #[allow(unused_variables)]
+    ///! Enter to state
     fn enter(&self, target: &T) {}
 
-    #[allow(unused_variables)]
+    ///! Exit from state
     fn exit(&self, target: &T) {}
 }
 
@@ -52,7 +84,7 @@ mod tests {
 
     impl State<CallbackIntegration> for MockCallbackState {
         fn enter(&self, _target: &CallbackIntegration) {
-            // self.entered = true;
+            //! self.entered = true;
         }
 
         fn exit(&self, _target: &CallbackIntegration) {}
@@ -71,11 +103,11 @@ mod tests {
 
     impl State<MockIntegration> for MockInjectorStateB {
         fn enter(&self, _target: &MockIntegration) {
-            // self.entered = true;
+            //! self.entered = true;
         }
 
         fn exit(&self, _target: &MockIntegration) {
-            // self.entered = false;
+            //! self.entered = false;
         }
     }
 
@@ -91,11 +123,11 @@ mod tests {
 
     impl State<MockIntegration> for MockInjectorState {
         fn enter(&self, _target: &MockIntegration) {
-            // self.entered = true;
+            //! self.entered = true;
         }
 
         fn exit(&self, _target: &MockIntegration) {
-            // self.entered = false;
+            //! self.entered = false;
         }
     }
 

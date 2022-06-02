@@ -2,14 +2,14 @@ use std::{fmt::Debug, rc::Rc};
 
 use super::{Command, Interest, Notification};
 
-/// The interface definition for a PureMVC Controller.
+/// The definition for a PureMVC Controller.
 ///
 /// In PureMVC, an [Controller] implementor
 /// follows the 'Command and Controller' strategy, and
 /// assumes these responsibilities:
 ///
-/// - Remembering which [Command]s
-/// are intended to handle which [Notification]s
+/// - Remembering which [Command]'s
+/// are intended to handle which [Notification]'s
 /// - Registering itself as an [Observer] with
 /// the [View] for each [Notification]
 /// that it has an [Command] mapping for
@@ -18,6 +18,9 @@ use super::{Command, Interest, Notification};
 /// - Calling the [Command]'s [execute]
 /// method, passing in the [Notification]
 ///
+/// [Observer]: crate::prelude::Observer
+/// [View]: crate::prelude::View
+/// [execute]: Command::execute
 
 pub trait Controller<Body>
 where
@@ -28,7 +31,7 @@ where
     fn register_command(&self, interest: Interest, command: Rc<dyn Command<Body>>);
 
     /// Execute the [Command] previously registered as the
-    /// handler for [Notification]s with the given notification name.
+    /// handler for [Notification]'s with the given notification name.
     fn execute_command(&self, notification: Rc<dyn Notification<Body>>);
 
     /// Remove a previously registered [Command] to [Notification] mapping.

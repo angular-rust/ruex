@@ -2,6 +2,7 @@ use std::{any::TypeId, cell::RefCell, collections::HashMap, rc::Rc};
 
 use super::{integrations::FsmIntegration, State, StateDef, Transitions, Typed};
 
+/// Represents Fsm properties
 #[derive(Default)]
 pub struct FsmProps<T>
 where
@@ -11,6 +12,7 @@ where
     current_state: Option<Rc<StateDef<T>>>,
 }
 
+/// Represent finite state machine
 #[derive(Default, Clone)]
 pub struct Fsm<T>
 where
@@ -27,6 +29,7 @@ where
     // Require #![feature(const_type_id)]
     // pub const TYPE_ID: TypeId = TypeId::of::<Self>();
 
+    /// Create new finite state machine
     pub fn new(integration: T) -> Self {
         Self {
             integration,
@@ -113,6 +116,7 @@ where
         props.states.insert(state_type_id, Rc::new(state_def));
     }
 
+    /// Retrieve current state
     pub fn current_state_name(&self) -> String {
         // let props = self.props.borrow();
         // props

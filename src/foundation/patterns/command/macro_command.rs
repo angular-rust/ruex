@@ -5,16 +5,16 @@ use crate::{
     prelude::{Command, Facade, Interest, Notification, Notifier, Singleton},
 };
 
-/// A base [Command] implementation that executes other [Command]s.
+/// A base [Command] implementation that executes other _Commands_.
 ///
 /// A [MacroCommand] maintains an list of
-/// [Command] Class references called <em>SubCommands</em>.
+/// [Command] Class references called _SubCommands_.
 ///
-/// When [execute] is called, the [MacroCommand]
-/// instantiates and calls [execute] on each of its <em>SubCommands</em> turn.
-/// Each <em>SubCommand</em> will be passed a reference to the original
+/// When [execute](Command::execute) is called, the [MacroCommand]
+/// instantiates and calls [execute](Command::execute) on each of its _SubCommands_ turn.
+/// Each _SubCommand_ will be passed a reference to the original
 /// [Notification] that was passed to the [MacroCommand]'s
-/// [execute] method.
+/// [execute](Command::execute) method.
 
 pub struct MacroCommand<Body>
 where
@@ -41,7 +41,9 @@ where
     /// order.
     ///
     /// Note that `SubCommand`s may be any [Command] implementor,
-    /// [MacroCommand]s or [SimpleCommand]s are both acceptable.
+    /// [MacroCommand]'s or [SimpleCommand]'s are both acceptable.
+    /// 
+    /// [SimpleCommand]: super::SimpleCommand
     pub fn add_sub_command(&mut self, command: Box<dyn Command<Body>>) {
         let mut sub_commands = self.sub_commands.borrow_mut();
 

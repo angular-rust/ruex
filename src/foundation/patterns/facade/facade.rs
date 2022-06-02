@@ -16,7 +16,7 @@ use crate::{
 ///
 /// - Initializing the [Model], [View] and [Controller] Singletons.
 /// - Providing all the methods defined by the [Model], [View], & [Controller] interfaces.
-/// - Providing a single point of contact to the application for registering [Command]s and notifying [Observer]s
+/// - Providing a single point of contact to the application for registering [Command]'s and notifying [Observer]'s
 ///
 
 pub struct BaseFacade<Body>
@@ -153,9 +153,9 @@ where
         self.view.remove_observer(interest, notify_context);
     }
 
-    /// Notify the [Observer]s for a particular [Notification].
+    /// Notify the [Observer]'s for a particular [Notification].
     ///
-    /// All previously attached [Observer]s for this [Notification]'s
+    /// All previously attached [Observer]'s for this [Notification]'s
     /// list are notified and are passed a reference to the [Notification] in
     /// the order in which they were registered.
     ///

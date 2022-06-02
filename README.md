@@ -27,19 +27,91 @@
 [loc-badge]: https://img.shields.io/tokei/lines/github/angular-rust/ruex?style=flat-square
 [loc-url]: https://github.com/angular-rust/ruex
 
-Ruex is a Centralized State Management And Design Patterns for Rust.
+Design pattern framework on top of PureMVC. 
 
-## Pattern List
+The PureMVC framework has a very narrow goal. That is to help you
+separate your application’s coding interests into three discrete tiers:
+[Model][2], [View][3] and [Controller][1].
 
-Template name                                                     |    Type    | Links 
-:-----------------------------------------------------------------|:----------:|:------------
-[Builder](src/foundation/patterns/builder.rs)                     | Creational | [Refactoring.Guru](https://refactoring.guru/design-patterns/builder) |
-[Command](src/foundation/patterns/command/simple_command.rs)      | Behavioral | [Refactoring.Guru](https://refactoring.guru/design-patterns/command) |
-[Facade](src/foundation/patterns/facade.rs)                       | Structural | [Refactoring.Guru](https://refactoring.guru/design-patterns/facade) |
-[Mediator](src/foundation/patterns/mediator/mediator.rs)          | Behavioral | [Refactoring.Guru](https://refactoring.guru/design-patterns/mediator) |
-[Proxy](src/foundation/patterns/proxy/proxy.rs)                   | Structural | [Refactoring.Guru](https://refactoring.guru/design-patterns/proxy) |
-[Observer](src/foundation/patterns/observer/observer.rs)          | Behavioral | [Refactoring.Guru](https://refactoring.guru/design-patterns/observer) |
-[Singleton](src/prelude/singleton.rs)                             | Creational | [Refactoring.Guru](https://refactoring.guru/design-patterns/singleton) |
+This separation of interests, and the tightness and direction of the
+couplings used to make them work together is of paramount
+importance in the building of scalable and maintainable applications.
+
+In this implementation of the classic MVC Design meta-pattern, these
+three tiers of the application are governed by three Singletons (a class
+where only one instance may be created) called simply [Model][2], [View][3]
+and [Controller][1]. Together, they are referred to as the ‘Core actors’.
+
+A fourth Singleton, the [Facade][4] simplifies development by providing a
+single interface for communication with the Core actors.
+
+## Model & Proxies
+
+The [Model][2] simply caches named references to Proxies. Proxy code
+manipulates the data model, communicating with remote services if
+need be to persist or retrieve it.
+
+This results in portable Model tier code.
+
+## View & Mediators
+
+The View primarily caches named references to [Mediators][7]. [Mediator][7]
+code stewards View Components, adding event listeners, sending
+and receiving notifications to and from the rest of the system on
+their behalf and directly manipulating their state.
+
+This separates the View definition from the logic that controls it.
+
+## Controller & Commands
+
+The [Controller][1] maintains named mappings to Command classes,
+which are stateless, and only created when needed.
+
+[Commands][9] may retrieve and interact with Proxies, send
+Notifications, execute other [Commands][9], and are often used to
+orchestrate complex or system-wide activities such as application
+startup and shutdown. They are the home of your application’s
+Business Logic.
+
+## Facade & Core
+
+The [Facade][4], another Singleton, initializes the Core actors ([Model][2],
+[View][3] and [Controller][1]), and provides a single place to access all of
+their public methods.
+
+By extending the [Facade][4], your application gets all the benefits of
+Core actors without having to import and work with them directly.
+You will implement a concrete [Facade][4] for your application only once
+and it is simply done.
+
+[Proxies][6], [Mediators][7] and [Commands][9] may then use your application’s
+concrete [Facade][4] in order to access and communicate with each
+other.
+
+## Observers & Notifications
+
+PureMVC applications may run in environments without access to
+Event and EventDispatcher classes, so the framework
+implements an [Observer][8] notification scheme for communication
+between the Core MVC actors and other parts of the system in a
+loosely-coupled way.
+
+You need not be concerned about the details of the PureMVC
+[Observer][8]/[Notification][5] implementation; it is internal to the
+framework. You will use a simple method to send [Notifications][5] from
+[Proxies][6], [Mediators][7], [Commands][9] and the Facade itself that doesn’t
+even require you to create a [Notification][5] instance.
+
+[1]: https://docs.rs/ruex/latest/ruex/prelude/trait.Controller.html
+[2]: https://docs.rs/ruex/latest/ruex/prelude/trait.Model.html
+[3]: https://docs.rs/ruex/latest/ruex/prelude/trait.View.html
+[4]: https://docs.rs/ruex/latest/ruex/prelude/trait.Facade.html
+[5]: https://docs.rs/ruex/latest/ruex/prelude/trait.Notification.html
+[6]: https://docs.rs/ruex/latest/ruex/prelude/trait.Proxy.html
+[7]: https://docs.rs/ruex/latest/ruex/prelude/trait.Mediator.html
+[8]: https://docs.rs/ruex/latest/ruex/prelude/trait.Observer.html
+[9]: https://docs.rs/ruex/latest/ruex/prelude/trait.Command.html
+
 
 ## Quick Start
 
@@ -97,23 +169,3 @@ Come help us on the [issues that matter that the most](https://github.com/angula
 
 Please [report all bugs!](https://github.com/angular-rust/ruex/issues/new/choose) We are happy to help support developers fix the bugs they find if they are interested and have the time.
 
-## Todo
-
-Template name           |    Type    | Links 
-:-----------------------|:----------:|:------
-Abstract Factory        | Creational | [Refactoring.Guru](https://refactoring.guru/design-patterns/abstract-factory) |
-Adapter                 | Structural | [Refactoring.Guru](https://refactoring.guru/design-patterns/adapter) |
-Bridge                  | Structural | [Refactoring.Guru](https://refactoring.guru/design-patterns/bridge) |
-Chain of Responsibility | Behavioral | [Refactoring.Guru](https://refactoring.guru/design-patterns/chain-of-responsibility) |
-Composite               | Structural | [Refactoring.Guru](https://refactoring.guru/design-patterns/composite) |
-Decorator               | Structural | [Refactoring.Guru](https://refactoring.guru/design-patterns/decorator) |
-Factory Method          | Creational | [Refactoring.Guru](https://refactoring.guru/design-patterns/factory-method) |
-Flyweight               | Structural | [Refactoring.Guru](https://refactoring.guru/design-patterns/flyweight) |
-Interpreter             | Behavioral | [Wiki](https://en.wikipedia.org/wiki/Interpreter_pattern) |
-Iterator                | Behavioral | [Refactoring.Guru](https://refactoring.guru/design-patterns/iterator) |
-Memento                 | Behavioral | [Refactoring.Guru](https://refactoring.guru/design-patterns/memento) |
-Prototype               | Creational | [Refactoring.Guru](https://refactoring.guru/design-patterns/prototype) |
-State                   | Behavioral | [Refactoring.Guru](https://refactoring.guru/design-patterns/state) |
-Strategy                | Behavioral | [Refactoring.Guru](https://refactoring.guru/design-patterns/strategy) |
-Template Method         | Behavioral | [Refactoring.Guru](https://refactoring.guru/design-patterns/template-method) |
-Visitor                 | Behavioral | [Refactoring.Guru](https://refactoring.guru/design-patterns/visitor) |

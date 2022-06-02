@@ -16,22 +16,18 @@
 
 // // these functions shouldn't be set since there are not attrs on jaf. if they are set then it wont compile because these would be duplicate function definitions, so then we'd know theres something wrong.
 // impl Ts {
-//     #[allow(dead_code)]
 //     pub fn get_jaf(&self) -> & u8 {
 //         &self.field_1
 //     }
 
-//     #[allow(dead_code)]
 //     pub fn jaf(&self) -> u8 {
 //         self.jaf
 //     }
 
-//     #[allow(dead_code)]
 //     pub fn get_jaf_mut(&mut self) -> &mut u8 {
 //         &mut self.field_1
 //     }
 
-//     #[allow(dead_code)]
 //     pub fn set_jaf(&mut self, v: u8) {
 //         self.jaf = v;
 //     }

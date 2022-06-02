@@ -1,3 +1,5 @@
+//! Catalog of patterns
+
 pub mod command;
 
 pub mod default;

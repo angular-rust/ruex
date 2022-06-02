@@ -2,7 +2,7 @@ use std::rc::Rc;
 
 use super::Proxy;
 
-/// The interface definition for a PureMVC Model.
+/// The definition for a PureMVC Model.
 ///
 /// In PureMVC, [Model] implementors provide
 /// access to [Proxy] objects by named lookup.

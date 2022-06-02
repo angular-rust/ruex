@@ -1,3 +1,13 @@
+//! The `ruex` prelude.
+//!
+//! The purpose of this module is to alleviate imports of many common ruex
+//! traits by adding a glob import to the top of ruex heavy modules:
+//!
+//! ```
+//! # #![allow(unused_imports)]
+//! use ruex::prelude::*;
+//! ```
+
 mod builder;
 pub use self::builder::*;
 
