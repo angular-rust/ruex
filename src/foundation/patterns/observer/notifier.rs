@@ -28,6 +28,7 @@ use crate::{
 /// [Proxy]: crate::prelude::Proxy
 /// [Facade]: crate::prelude::Facade
 
+#[derive(Default)]
 pub struct BaseNotifier;
 
 impl BaseNotifier {

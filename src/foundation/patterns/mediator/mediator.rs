@@ -30,7 +30,7 @@ where
     Body: fmt::Debug + 'static,
 {
     fn view_component(&self) -> Option<Rc<dyn View<Body>>> {
-        self.view_component.as_ref().map(|c| c.clone())
+        self.view_component.as_ref().cloned()
     }
 
     fn handle_notification(&self, _notification: Rc<dyn Notification<Body>>) {}

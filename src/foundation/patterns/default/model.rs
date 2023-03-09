@@ -24,6 +24,9 @@ use crate::prelude::{Model, Proxy, Singleton};
 /// 
 /// [Command]: crate::prelude::Command
 /// [Facade]: crate::prelude::Facade
+/// 
+
+#[derive(Default)]
 pub struct BaseModel {
     // Mapping of proxy types to [Proxy] instances
     storages: RefCell<BTreeMap<TypeId, Rc<dyn Any>>>,

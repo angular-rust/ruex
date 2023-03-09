@@ -1,5 +1,11 @@
 //! Catalog of patterns
 
+#![allow(
+    clippy::module_inception,
+    clippy::new_without_default,
+    clippy::type_complexity
+)]
+
 pub mod command;
 
 pub mod default;

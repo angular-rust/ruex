@@ -18,4 +18,20 @@ maintenance = { status = "actively-developed" }
 [dependencies]
 log = "0.4"
 serde = { version = "1.0", features = ["derive"] }
-once_cell = "1.7.2"
+once_cell = "1.7"
+futures = "0.3"
+ruex-macro = { version="0", path = "macro" }
+colored = "2.0"
+atty = "0.2"
+url = "2.2"
+urlencoding = "2.1"
+color-backtrace = "0.5"
+fern = { version = "0.6", features = ["colored", "syslog-6", "meta-logging-in-format", "chrono"] }
+humantime = "2.1"
+syslog = "6"
+# contracts = "0.6"
+# systemd-journal-logger = "0.7"
+rust-companion = "0"
+
+[build-dependencies]
+rust-companion = "0"

@@ -18,11 +18,17 @@ pub struct CallbackIntegration;
 
 impl CallbackIntegration {
     /// Create new callback integration
-    pub fn new() {}
+    pub fn new() -> Self {
+        Self
+    }
 }
 
 impl FsmIntegration<Self> for CallbackIntegration {
-    fn transition(&self, new_state: Rc<StateDef<Self>>, old_state: Option<Rc<StateDef<Self>>>) -> bool {
+    fn transition(
+        &self,
+        new_state: Rc<StateDef<Self>>,
+        old_state: Option<Rc<StateDef<Self>>>,
+    ) -> bool {
         if let Some(ref old_state) = old_state {
             old_state.state.exit(self)
         }

@@ -8,7 +8,10 @@ use std::{
 
 use crate::{
     foundation::patterns::observer::BaseObserver,
-    prelude::{Interest, Mediator, MediatorRegistry, Notification, NotifyContext, Observer, Singleton, View},
+    prelude::{
+        Interest, Mediator, MediatorRegistry, Notification, NotifyContext, Observer, Singleton,
+        View,
+    },
 };
 
 /// A Singleton [View] implementation.
@@ -81,12 +84,7 @@ where
         // Copy observers from reference array to working array,
         // since the reference array may change during the notification loop
         // and prevent double borrow ))
-        let observers = {
-            self.observer_map
-                .borrow()
-                .get(&note.interest())
-                .map(|observers| observers.clone())
-        };
+        let observers = self.observer_map.borrow().get(&note.interest()).cloned();
 
         if let Some(observers) = observers {
             for observer in observers.iter() {
@@ -100,13 +98,11 @@ where
         // log::info!("Register Observer [BaseView] {:?}", interest);
         let mut observer_map = self.observer_map.borrow_mut();
 
-        if !observer_map.contains_key(&interest) {
-            observer_map.insert(interest.clone(), Vec::new());
-        }
+        observer_map.entry(interest).or_insert_with(Vec::new);
 
-        observer_map
-            .get_mut(&interest)
-            .map(|observers| observers.push(observer));
+        if let Some(observers) = observer_map.get_mut(&interest) {
+            observers.push(observer)
+        }
     }
 
     // It private so its fun
@@ -114,17 +110,17 @@ where
         let mut observer_map = self.observer_map.borrow_mut();
 
         // the observer list for the notification under inspection
-        observer_map.remove(interest).as_mut().map(|observers| {
+        if let Some(observers) = observer_map.remove(interest).as_mut() {
             // find the observer for the notify_context
             for (idx, observer) in observers.iter().enumerate() {
-                if observer.compare_context(context) == true {
+                if observer.compare_context(context) {
                     // there can only be one Observer for a given notify_context
                     // in any given Observer list, so remove it and break
                     observers.remove(idx);
                     break;
                 }
             }
-        });
+        }
     }
 }
 
@@ -148,7 +144,7 @@ where
 
         // Get Notification interests, if any.
         let interests = mediator.list_notification_interests();
-        if interests.len() > 0 {
+        if !interests.is_empty() {
             let mediator = mediator.clone();
             let context = mediator.clone();
             // Create Observer
@@ -162,7 +158,7 @@ where
 
             // Register Mediator as Observer for its list of Notification interests
             for interest in interests.iter() {
-                self.register_observer(interest.clone(), observer.clone());
+                self.register_observer(*interest, observer.clone());
             }
         }
 
@@ -174,7 +170,7 @@ where
 
         match self.mediator_map.borrow().get(&type_id) {
             Some(item) => match item.clone().downcast::<M>() {
-                Ok(mediator) => Some(mediator.clone()),
+                Ok(mediator) => Some(mediator),
                 Err(_) => {
                     log::error!("Something wrong with proxy storage");
                     None
@@ -188,42 +184,45 @@ where
         // remove the mediator from the map
         let type_id = TypeId::of::<M>();
 
-        self.mediator_map.borrow_mut().remove(&type_id).map(|mediator| {
-            match mediator.downcast::<M>() {
-                Ok(mediator) => {
-                    // for every notification this mediator is interested in...
-                    let interests = mediator.list_notification_interests();
-                    for interest in interests.iter() {
-                        // remove the observer linking the mediator
-                        // to the notification interest
+        self.mediator_map
+            .borrow_mut()
+            .remove(&type_id)
+            .map(|mediator| {
+                match mediator.downcast::<M>() {
+                    Ok(mediator) => {
+                        // for every notification this mediator is interested in...
+                        let interests = mediator.list_notification_interests();
+                        for interest in interests.iter() {
+                            // remove the observer linking the mediator
+                            // to the notification interest
 
-                        let mut observer_map = self.observer_map.borrow_mut();
+                            let mut observer_map = self.observer_map.borrow_mut();
 
-                        let context = mediator.id();
+                            let context = mediator.id();
 
-                        // the observer list for the notification under inspection
-                        observer_map.remove(interest).as_mut().map(|observers| {
-                            // find the observer for the notify_context
-                            for (idx, observer) in observers.iter().enumerate() {
-                                if observer.context().id() == context {
-                                    // there can only be one Observer for a given notify_context
-                                    // in any given Observer list, so remove it and break
-                                    observers.remove(idx);
-                                    break;
+                            // the observer list for the notification under inspection
+                            if let Some(observers) = observer_map.remove(interest).as_mut() {
+                                // find the observer for the notify_context
+                                for (idx, observer) in observers.iter().enumerate() {
+                                    if observer.context().id() == context {
+                                        // there can only be one Observer for a given notify_context
+                                        // in any given Observer list, so remove it and break
+                                        observers.remove(idx);
+                                        break;
+                                    }
                                 }
                             }
-                        });
-                    }
+                        }
 
-                    // alert the mediator that it has been removed
-                    mediator.on_remove();
-                    mediator
+                        // alert the mediator that it has been removed
+                        mediator.on_remove();
+                        mediator
+                    }
+                    Err(_) => {
+                        panic!("Something wrong with mediator storage");
+                    }
                 }
-                Err(_) => {
-                    panic!("Something wrong with mediator storage");
-                }
-            }
-        })
+            })
     }
 
     fn has_mediator<M: Mediator<Body>>(&self) -> bool {

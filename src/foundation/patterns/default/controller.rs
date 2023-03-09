@@ -86,10 +86,10 @@ where
 
         log::info!("Execute Command [BaseController] {:?}", notification);
 
-        command_map.get(&notification.interest()).map(|command| {
+        if let Some(command) = command_map.get(&notification.interest()) {
             log::info!("Command [BaseController] {:?} for {:?}", command, notification);
             command.execute(notification)
-        });
+        }
     }
 
     fn has_command(&self, interest: &Interest) -> bool {
