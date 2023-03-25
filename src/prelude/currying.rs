@@ -4,14 +4,6 @@
 
 /// Currying for functions with 2 params
 ///
-/// ```no_run
-/// fn two_params(a1: &str, a2: &str) -> String {
-///     format!("{a1}/{a2}")
-/// }
-///
-/// let one = two_params.curry("/mnt");
-/// println!("{}", one("home"));
-/// ```
 pub trait Curry<A, B> {
     /// The concrete type that `curry` returns.
     type Output;
