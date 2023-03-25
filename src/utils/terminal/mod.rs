@@ -83,7 +83,7 @@ impl<'a> Link<'a> {
 
 impl fmt::Display for Link<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        if self.id != "" {
+        if !self.id.is_empty() {
             write!(
                 f,
                 "\u{1b}]8;id={};{}\u{1b}\\{}\u{1b}]8;;\u{1b}\\",
