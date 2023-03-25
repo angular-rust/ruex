@@ -1,4 +1,4 @@
-#![feature(proc_macro_span)]
+// #![feature(proc_macro_span)]
 #![allow(unused_imports)]
 #![allow(clippy::needless_doctest_main)]
 // #![warn(
@@ -333,19 +333,22 @@ pub fn register(attr: TokenStream, item: TokenStream) -> TokenStream {
 /// Subject mounting.
 #[proc_macro_attribute]
 pub fn mount(attr: TokenStream, item: TokenStream) -> TokenStream {
-    let mut it = item.clone().into_iter();
-    let first = it.next().unwrap();
-    let last = it.last().unwrap();
+    // let mut it = item.clone().into_iter();
+    // let first = it.next().unwrap();
+    // let last = it.last().unwrap();
 
+    // let path = first
+    //         .span()
+    //         .source_file()
+    //         .path()
+    //         .to_str()
+    //         .unwrap()
+    //         .to_string();
+    // let range = (first.span().start().line, last.span().end().line);
+    let path = String::new();
     let pos = ItemLocation {
-        path: first
-            .span()
-            .source_file()
-            .path()
-            .to_str()
-            .unwrap()
-            .to_string(),
-        range: (first.span().start().line, last.span().end().line),
+        path,
+        range: (0, 0),
     };
 
     impls::mount(attr.into(), item.into(), pos).into()
