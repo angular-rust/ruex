@@ -15,4 +15,5 @@ proc-macro-error = "1.0"
 serde_tokenstream = "0.1"
 syn-serde = { version = "0.2", features = ["json"] }
 serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1.0" }
 rust-companion = "0"

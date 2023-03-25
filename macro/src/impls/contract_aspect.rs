@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 use std::{
     collections::{HashMap, VecDeque},
     fmt,
@@ -751,7 +752,12 @@ impl SyntaxAndDocs for Vec<Contract> {
 }
 
 // process macro attribute by initiating currentt case and handle rest of cases
-pub(crate) fn contracts_aspect(ty: Type, mode: Mode, attrs: TokenStream2, item: TokenStream2) -> TokenStream2 {
+pub(crate) fn contracts_aspect(
+    ty: Type,
+    mode: Mode,
+    attrs: TokenStream2,
+    item: TokenStream2,
+) -> TokenStream2 {
     let mut state: ContractAspectState = ContractAspectState::default();
 
     // process primary contract case
@@ -807,14 +813,16 @@ pub(crate) fn contracts_aspect(ty: Type, mode: Mode, attrs: TokenStream2, item: 
         .aspects
         .iter()
         .filter_map(|aspect| {
-            if let Some(item) = &aspect.before && let Some(block) = &item.default {
-            let stmts = &block.stmts;
-            Some(quote!{
-                #(#stmts)*
-            })
-        } else {
-            None
-        }
+            if let Some(item) = &aspect.before {
+                item.default.as_ref().map(|block| {
+                    let stmts = &block.stmts;
+                    quote! {
+                        #(#stmts)*
+                    }
+                })
+            } else {
+                None
+            }
         })
         .collect::<Vec<_>>();
 
@@ -823,10 +831,12 @@ pub(crate) fn contracts_aspect(ty: Type, mode: Mode, attrs: TokenStream2, item: 
         .iter()
         .rev()
         .filter_map(|aspect| {
-            if let Some(item) = &aspect.after && let Some(block) = &item.default {
-                let stmts = &block.stmts;
-                Some(quote!{
-                    #(#stmts)*
+            if let Some(item) = &aspect.after {
+                item.default.as_ref().map(|block| {
+                    let stmts = &block.stmts;
+                    quote! {
+                        #(#stmts)*
+                    }
                 })
             } else {
                 None
@@ -841,24 +851,23 @@ pub(crate) fn contracts_aspect(ty: Type, mode: Mode, attrs: TokenStream2, item: 
 
     let mut it = state.aspects.iter().rev().peekable();
     while let Some(aspect) = it.next() {
-        if let Some(item) = &aspect.around && let Some(block) = &item.default {
+        if let Some(item) = &aspect.around {
+            item.default.as_ref().map(|block| {
+                let mut replacer = AspectJointPoint { stream: &around };
 
-            let mut replacer = AspectJointPoint {
-                stream: &around,
-            };
-            
-            let mut stmts = block.stmts.clone();
+                let mut stmts = block.stmts.clone();
 
-            for stmt in stmts.iter_mut() {
-                replacer.visit_stmt_mut(stmt);
-            }
-            
-            if it.peek().is_none() {
-                around = quote!(#(#stmts)*);
-            } else {
-                around = quote!({#(#stmts)*});
-            }
-            has_around = true;
+                for stmt in stmts.iter_mut() {
+                    replacer.visit_stmt_mut(stmt);
+                }
+
+                if it.peek().is_none() {
+                    around = quote!(#(#stmts)*);
+                } else {
+                    around = quote!({#(#stmts)*});
+                }
+                has_around = true;
+            });
         }
     }
 

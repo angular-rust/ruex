@@ -1,21 +1,19 @@
 use std::{
-    collections::VecDeque,
+    collections::{HashMap, VecDeque},
     net::UdpSocket,
 };
 
-use companion::{companion_addr, Task, Response};
+use companion::{companion_addr, Response, Task};
 use proc_macro2::{Span, TokenStream as TokenStream2};
 use quote::{quote, ToTokens};
 use syn::{
-    visit_mut::VisitMut,
-    Attribute, FnArg, Ident, Item,
-     ItemTrait, Pat, Path, 
-    TraitItem, TraitItemMethod,
+    visit_mut::VisitMut, Attribute, FnArg, Ident, Item, ItemTrait, Pat, Path, TraitItem,
+    TraitItemMethod,
 };
 
 use crate::MAX_UDP_PAYLOAD;
 
-use super::{AspectJointPoint, Type, ContractAspectState, SyntaxAndDocs};
+use super::{AspectJointPoint, ContractAspectState, Enum, SyntaxAndDocs, Type};
 
 /// Name used for the "re-routed" method.
 fn trait_method_impl_name(name: &str) -> String {
@@ -40,9 +38,7 @@ fn method_rename(method: &TraitItemMethod) -> TraitItemMethod {
             .filter(|attr| {
                 let name = attr.path.segments.last().unwrap().ident.to_string();
 
-                Type::type_and_mode(&name).is_none()
-                    && name != "aspect"
-                    && name != "doc"
+                Type::type_and_mode(&name).is_none() && name != "aspect" && name != "doc"
             })
             .cloned(),
     );
@@ -184,10 +180,12 @@ fn process_item_trait(path: String, mut input: ItemTrait) -> TokenStream2 {
                         .aspects
                         .iter()
                         .filter_map(|aspect| {
-                            if let Some(item) = &aspect.before && let Some(block) = &item.default {
-                                let stmts = &block.stmts;
-                                Some(quote!{
-                                    #(#stmts)*
+                            if let Some(item) = &aspect.before {
+                                item.default.as_ref().map(|block| {
+                                    let stmts = &block.stmts;
+                                    quote! {
+                                        #(#stmts)*
+                                    }
                                 })
                             } else {
                                 None
@@ -200,14 +198,16 @@ fn process_item_trait(path: String, mut input: ItemTrait) -> TokenStream2 {
                         .iter()
                         .rev()
                         .filter_map(|aspect| {
-                            if let Some(item) = &aspect.after && let Some(block) = &item.default {
+                            if let Some(item) = &aspect.after {
+                                item.default.as_ref().map(|block| {
                                     let stmts = &block.stmts;
-                                    Some(quote!{
+                                    quote! {
                                         #(#stmts)*
-                                    })
-                                } else {
-                                    None
-                                }
+                                    }
+                                })
+                            } else {
+                                None
+                            }
                         })
                         .collect::<Vec<_>>();
 
@@ -220,24 +220,23 @@ fn process_item_trait(path: String, mut input: ItemTrait) -> TokenStream2 {
 
                     let mut it = state.aspects.iter().rev().peekable();
                     while let Some(aspect) = it.next() {
-                        if let Some(item) = &aspect.around && let Some(block) = &item.default {
-                            
-                            let mut replacer = AspectJointPoint {
-                                stream: &around,
-                            };
+                        if let Some(item) = &aspect.around {
+                            item.default.as_ref().map(|block| {
+                                let mut replacer = AspectJointPoint { stream: &around };
 
-                            let mut stmts = block.stmts.clone();
-                            
-                            for stmt in stmts.iter_mut() {
-                                replacer.visit_stmt_mut(stmt);
-                            }
-                            
-                            if it.peek().is_none() {
-                                around = quote!(#(#stmts)*);
-                            } else {
-                                around = quote!({#(#stmts)*});
-                            }
-                            has_around = true;
+                                let mut stmts = block.stmts.clone();
+
+                                for stmt in stmts.iter_mut() {
+                                    replacer.visit_stmt_mut(stmt);
+                                }
+
+                                if it.peek().is_none() {
+                                    around = quote!(#(#stmts)*);
+                                } else {
+                                    around = quote!({#(#stmts)*});
+                                }
+                                has_around = true;
+                            });
                         }
                     }
 
@@ -400,6 +399,47 @@ fn process_remote_trait(path: String, mut input: ItemTrait) -> TokenStream2 {
     TokenStream2::new()
 }
 
+fn process_enum_trait(path: String, input: ItemTrait) -> TokenStream2 {
+    let supertraits = input
+        .supertraits
+        .iter()
+        .filter_map(|item| match item {
+            syn::TypeParamBound::Trait(item) => {
+                //
+                Some(
+                    item.path
+                        .segments
+                        .iter()
+                        .map(|segment| segment.ident.to_string())
+                        .collect::<Vec<_>>()
+                        .join("::"),
+                )
+            }
+            syn::TypeParamBound::Lifetime(_) => None,
+        })
+        .collect::<Vec<_>>();
+
+    let item = Enum {
+        supertraits,
+        items: HashMap::new(),
+    };
+
+    let data = serde_json::to_string(&item).unwrap();
+
+    let mut buf = [0; MAX_UDP_PAYLOAD];
+
+    let addr = companion_addr();
+
+    let socket = UdpSocket::bind("[::]:0").unwrap();
+    socket.connect(addr).unwrap();
+
+    socket.send(&Task::Set(&path, &data).as_bytes()).unwrap();
+    let (len, _src) = socket.recv_from(&mut buf).unwrap();
+    let _resp = Response::from(&buf[..len]);
+
+    TokenStream2::new()
+}
+
 fn process_aspect_trait(path: String, input: ItemTrait) -> TokenStream2 {
     input.items.iter().for_each(|item| {
         // check input
@@ -450,6 +490,8 @@ pub(crate) fn register(attrs: TokenStream2, input: TokenStream2) -> TokenStream2
                 process_aspect_trait(path, item)
             } else if ident.ends_with("Remote") {
                 process_remote_trait(path, item)
+            } else if ident.ends_with("Enum") {
+                process_enum_trait(path, item)
             } else {
                 process_item_trait(path, item)
             }

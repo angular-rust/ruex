@@ -1,4 +1,3 @@
-#![allow(dead_code)]
 #[allow(unused_imports)]
 use proc_macro::TokenStream;
 use serde::Deserialize;
@@ -14,6 +13,9 @@ pub(crate) use self::decorate::*;
 
 mod delegate;
 pub(crate) use self::delegate::*;
+
+mod enums;
+pub(crate) use self::enums::*;
 
 mod mock;
 pub(crate) use self::mock::*;
@@ -71,7 +73,7 @@ enum BactraceLevel {
     Full,
 }
 
-// #[cfg(not(test))] // Work around for rust-lang/rust#62127
+#[cfg(not(test))] // Work around for rust-lang/rust#62127
 pub(crate) fn main(attr: TokenStream, item: TokenStream) -> TokenStream {
     let attr = proc_macro2::TokenStream::from(attr);
     let config = if !attr.is_empty() {

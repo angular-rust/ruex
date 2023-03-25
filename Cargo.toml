@@ -1,6 +1,6 @@
 [package]
 name = "ruex"
-version = "0.1.3"
+version = "0.1.4"
 authors = ["Victor Dudochkin <dudochkin.victor@gmail.com>"]
 readme = "README.md"
 homepage = "https://angular-rust.github.io/ruex"

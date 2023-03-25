@@ -1,3 +1,5 @@
+#![feature(proc_macro_span)]
+#![allow(unused_imports)]
 #![allow(clippy::needless_doctest_main)]
 // #![warn(
 //     missing_debug_implementations,
@@ -10,10 +12,10 @@
     attr(deny(warnings, rust_2018_idioms), allow(dead_code, unused_variables))
 ))]
 
-use proc_macro::TokenStream;
+use proc_macro::{Span, TokenStream, TokenTree};
 
 mod impls;
-use impls::{Mode, Type};
+use impls::{ItemLocation, Mode, Type};
 
 const MAX_UDP_PAYLOAD: usize = 65507;
 
@@ -81,7 +83,7 @@ const MAX_UDP_PAYLOAD: usize = 65507;
 /// }
 /// ```
 #[proc_macro_attribute]
-// #[cfg(not(test))] // Work around for rust-lang/rust#62127
+#[cfg(not(test))] // Work around for rust-lang/rust#62127
 pub fn main(attr: TokenStream, item: TokenStream) -> TokenStream {
     impls::main(attr, item)
 }
@@ -326,6 +328,27 @@ pub fn mock(attr: TokenStream, item: TokenStream) -> TokenStream {
 #[proc_macro_attribute]
 pub fn register(attr: TokenStream, item: TokenStream) -> TokenStream {
     impls::register(attr.into(), item.into()).into()
+}
+
+/// Subject mounting.
+#[proc_macro_attribute]
+pub fn mount(attr: TokenStream, item: TokenStream) -> TokenStream {
+    let mut it = item.clone().into_iter();
+    let first = it.next().unwrap();
+    let last = it.last().unwrap();
+
+    let pos = ItemLocation {
+        path: first
+            .span()
+            .source_file()
+            .path()
+            .to_str()
+            .unwrap()
+            .to_string(),
+        range: (first.span().start().line, last.span().end().line),
+    };
+
+    impls::mount(attr.into(), item.into(), pos).into()
 }
 
 /// Aspect-oriented methodology.
