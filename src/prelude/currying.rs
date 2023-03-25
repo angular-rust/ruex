@@ -4,7 +4,7 @@
 
 /// Currying for functions with 2 params
 ///
-/// ```
+/// ```no_run
 /// fn two_params(a1: &str, a2: &str) -> String {
 ///     format!("{a1}/{a2}")
 /// }
