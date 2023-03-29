@@ -34,6 +34,7 @@ jobs:
         uses: actions-rs/tarpaulin@v0.1
         with:
           args: '--all-features --run-types Doctests,Tests'
+          version: '0.15.0'
           timeout: 120
 
       - name: Upload to codecov.io
