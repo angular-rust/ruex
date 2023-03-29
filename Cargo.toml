@@ -32,6 +32,8 @@ syslog = "6"
 # contracts = "0.6"
 # systemd-journal-logger = "0.7"
 rust-companion = "0"
+quanta = "0.11.0"
+perf-event = "0.4.8"
 
 [build-dependencies]
 rust-companion = "0"
